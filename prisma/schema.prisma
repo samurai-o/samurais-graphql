@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 用户信息
+model user {
+  id        String @id @default(uuid())
+  accountID String
+  info      String
+}
+
+// 账号
+model account {
+  id       String   @id @default(uuid())
+  email    String
+  password String
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now())
+}
+
+// 系统code
+model systemcode {
+  id   String @id @default(uuid())
+  type String
+  code String
+  name String
+}
+
+// 组织xinxi
+model organazition {
+  id String @id @default(uuid())
+}
+
+// 组织人员
+model personnel {
+  id             String @id @default(uuid())
+  accountId      String
+  organazitionId String
+}
