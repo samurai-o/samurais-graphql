@@ -1,0 +1,41 @@
+trigger:
+  - 'release/*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: 'lemonpaimc/samurai-node'
+  containerName: 'samurai-node'
+  prisma: '/home/graphql/prisam'
+  prismaenv: '/home/graphql/prisam/.env'
+  env: '/home/graphql/env'
+
+steps:
+  - task: Docker@2
+    displayName: 登录
+    inputs:
+      command: login
+      containerRegistry: lemonapimc
+
+  - task: Docker@2
+    displayName: 打包
+    inputs:
+      command: build
+      repository: $(imageName)
+      tags: $(Build.SourceBranchName)_$(Build.SourceVersion) ## commitID
+
+  - task: Docker@2
+    displayName: 发布
+    inputs:
+      command: push
+      repository: $(imageName)
+      tags: $(Build.SourceBranchName)_$(Build.SourceVersion) ## commitID
+
+  - task: SSH@0
+    displayName: 启动
+    inputs:
+      sshEndpoint: samurai
+      runOptions: inline
+      inline: |
+        echo "##[log] "
