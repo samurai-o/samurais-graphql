@@ -21,8 +21,8 @@ export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(SessionMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL })
+      .apply(LoggerMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
-    // .apply(LoggerMiddleware)
-    // .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

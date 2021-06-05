@@ -12,6 +12,7 @@ export function environment(): envc {
     user: process.env.USER_PORT,
     pkg: process.env.PKG_PORT,
     upload: process.env.UPLOAD_PORT,
+    auth: process.env.AUTH_PORT,
     gateway: process.env.GATEWAY_PORT,
     SecretId: process.env.SECRETID,
     SecretKey: process.env.SECRETKEY,

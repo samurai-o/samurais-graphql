@@ -4,6 +4,7 @@
 /logs
 /prisma/.env
 /env
+/.initial.json
 
 # Logs
 logs

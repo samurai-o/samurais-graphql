@@ -10,6 +10,7 @@ export type Environment = {
   NODE_ENV: string;
   USER_PORT?: string;
   PKG_PORT?: string;
+  AUTH_PORT?: string;
   GATEWAY_PORT?: string;
   UPLOAD_PORT?: string;
   SECRETID?: string;
@@ -28,6 +29,7 @@ export type Environment = {
 export type envc = {
   user: string;
   pkg: string;
+  auth: string;
   upload: string;
   gateway: string;
   SecretId: string;

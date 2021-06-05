@@ -1,3 +1,4 @@
+import { ApiException } from '@app/exceptions';
 import { PrismastoreService } from '@app/prismastore';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -22,7 +23,9 @@ export class AuthService {
 
   async register(data: AccountDto) {
     const { email, password } = data;
-    const account = await this.prisma.account.create({
+    let account = await this.prisma.account.findFirst({ where: { email } });
+    if (account) throw new ApiException('账号重名', 999, 200);
+    account = await this.prisma.account.create({
       data: { email, password },
     });
     if (!account) throw new Error('创建失败');
@@ -37,5 +40,13 @@ export class AuthService {
     return `bearer  ${this.jwt.sign(
       JSON.stringify({ id: data.id, email: data.email }),
     )}`;
+  }
+
+  /**
+   * 查询登录地址
+   * @returns
+   */
+  async queryLoginAuth() {
+    return '';
   }
 }

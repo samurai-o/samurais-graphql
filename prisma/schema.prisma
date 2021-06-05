@@ -15,15 +15,21 @@ model user {
   id        String @id @default(uuid())
   accountID String
   info      String
+
+  @@index([accountID, id])
 }
 
 // 账号
 model account {
-  id       String   @id @default(uuid())
-  email    String
-  password String
-  createAt DateTime @default(now())
-  updateAt DateTime @default(now())
+  id            String      @id @default(uuid())
+  email         String
+  password      String
+  createAt      DateTime    @default(now())
+  updateAt      DateTime    @default(now())
+  organazitions personnel[]
+
+  developers developer[]
+  @@index([email, id])
 }
 
 // 系统code
@@ -36,12 +42,50 @@ model systemcode {
 
 // 组织xinxi
 model organazition {
-  id String @id @default(uuid())
+  id         String      @id @default(uuid())
+  // 名称
+  name       String
+  // 描述
+  describe   String
+  // 组织成员
+  personnels personnel[]
+
+  packages pkg[]
+
+  @@index([id, name])
 }
 
 // 组织人员
 model personnel {
-  id             String @id @default(uuid())
+  id             String       @id @default(uuid())
+  account        account      @relation(fields: [accountId], references: [id])
   accountId      String
+  organazition   organazition @relation(fields: [organazitionId], references: [id])
   organazitionId String
+}
+
+// 包基础信息
+model pkg {
+  id             String        @id @default(uuid())
+  name           String
+  // 描述
+  describe       String
+  createAt       DateTime      @default(now())
+  updateAt       DateTime      @default(now())
+  organazition   organazition? @relation(fields: [organazitionId], references: [id])
+  organazitionId String?
+  developers     developer[]
+
+  @@index([id, name, organazitionId])
+}
+
+model developer {
+  id        String  @id @default(uuid())
+  package   pkg     @relation(fields: [packageId], references: [id])
+  packageId String
+  user      account @relation(fields: [userId], references: [id])
+  userId    String
+  type      Int // 账号类型
+
+  @@index([id, userId])
 }

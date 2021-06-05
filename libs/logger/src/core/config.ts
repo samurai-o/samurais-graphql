@@ -1,29 +1,30 @@
 import { Configuration } from 'log4js';
 import { resolve } from 'path';
 
-const basepath = resolve(__dirname, '../../../../logs');
+const logdir = resolve(__dirname, '../../../logs');
 
-export const loggerConfig: Configuration = {
+const config: Configuration = {
   appenders: {
-    access: {
+    http: {
       type: 'dateFile',
-      filename: `${basepath}/access/access.log`,
+      filename: `${logdir}/http.log`,
       alwaysIncludePattern: true,
       pattern: 'yyyyMMdd',
       daysToKeep: 60,
+      compress: true,
       keepFileExt: true,
     },
     app: {
       type: 'dateFile',
-      filename: `${basepath}/app/app.log`,
+      filename: `${logdir}/app.log`,
       alwaysIncludePattern: true,
       pattern: 'yyyyMMdd',
       daysToKeep: 60,
       keepFileExt: true,
     },
-    errorFile: {
+    error: {
       type: 'dateFile',
-      filename: `${basepath}/error/error.log`,
+      filename: `${logdir}/error.log`,
       alwaysIncludePattern: true,
       pattern: 'yyyyMMdd',
       daysToKeep: 60,
@@ -42,8 +43,10 @@ export const loggerConfig: Configuration = {
     default: { appenders: ['console', 'app', 'errors'], level: 'DEBUG' },
     info: { appenders: ['console', 'app', 'errors'], level: 'info' },
     access: { appenders: ['console', 'app', 'errors'], level: 'info' },
-    http: { appenders: ['access'], level: 'debug' },
+    http: { appenders: ['http'], level: 'DEBUG' },
   },
   pm2: true,
   pm2InstanceVar: 'INSTANCE_ID',
 };
+
+export default config;

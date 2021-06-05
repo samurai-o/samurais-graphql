@@ -1,41 +1,98 @@
 trigger:
-  - 'release/*'
+  - release
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  imageName: 'lemonpaimc/samurai-node'
-  containerName: 'samurai-node'
-  prisma: '/home/graphql/prisam'
-  prismaenv: '/home/graphql/prisam/.env'
+  imageName: 'lemonpaimc/samurai-graphql'
+  containerName: 'SamuraiGraphql'
+  prisma: '/home/graphql/prisma'
+  prismaenv: '/home/graphql/.env'
   env: '/home/graphql/env'
-
 steps:
   - task: Docker@2
-    displayName: 登录
+    displayName: docker登录
     inputs:
       command: login
-      containerRegistry: lemonapimc
+      containerRegistry: lemonpaimc
 
   - task: Docker@2
-    displayName: 打包
+    displayName: 打包镜像
     inputs:
       command: build
       repository: $(imageName)
-      tags: $(Build.SourceBranchName)_$(Build.SourceVersion) ## commitID
+      tags: $(Build.SourceBranchName)_$(Build.SourceVersion) ## git commitId
+      arguments: --build-arg PM2_KEY=$(pm2_key) --build-arg PM2_ID=$(pm2_id)
 
   - task: Docker@2
-    displayName: 发布
+    displayName: 发布镜像
     inputs:
       command: push
       repository: $(imageName)
-      tags: $(Build.SourceBranchName)_$(Build.SourceVersion) ## commitID
+      tags: $(Build.SourceBranchName)_$(Build.SourceVersion)
 
   - task: SSH@0
-    displayName: 启动
+    displayName: 启动nginx服务
     inputs:
       sshEndpoint: samurai
       runOptions: inline
       inline: |
-        echo "##[log] "
+        echo "##[group] 启动nginx服务"
+
+        mkdir -p $(prisma)
+        mkdir -p $(env)
+
+        echo "##[info] docker login -u $(dockerus)"
+        docker login -u $(dockerus) -p $(dockerps) >> /dev/null 2>&1
+        rc=$?
+        if [[ $rc != 0 ]];
+        then
+          echo "##[error] 登录失败"
+          exit $rc;
+        fi
+        echo "##[info] 登录成功"
+        constainer=$(docker ps -q --filter name=$(containerName)_$(Build.SourceBranchName))
+        if test -n "$constainer"; then
+          docker stop $constainer >> /dev/null 2>&1
+          rc=$?
+          if [[ $rc != 0 ]];
+          then
+            echo "##[error] 容器$(containerName)_$(Build.SourceBranchName)停止失败"
+            exit $rc;
+          fi
+          echo "##[info] 容器$(containerName)_$(Build.SourceBranchName)停止"
+
+          docker rm $constainer >> /dev/null 2>&1
+          rc=$?
+          if [[ $rc != 0 ]];
+          then
+            echo "##[error] 容器$(containerName)_$(Build.SourceBranchName)删除失败"
+            exit $rc;
+          fi
+          echo "##[success] 容器$(containerName)_$(Build.SourceBranchName)删除"
+        fi
+
+        echo "##[info] 拉取镜像$(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion)"
+        docker pull $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion) >> /dev/null 2>&1
+        rc=$?
+        if [[ $rc != 0 ]];
+        then
+          echo "##[error] 拉取镜像$(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion)失败"
+          exit $rc;
+        fi
+        echo "##[success] 拉取镜像$(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion)成功"
+
+        echo '##[info] 启动容器$(containerName)-$(Build.SourceBranchName)'
+        echo '##[info] '
+
+        echo "##[info] docker run -d -p 3000:3000 -p 3001:3001 --name $(containerName)_$(Build.SourceBranchName) -v $(prisma):/home/node/samurais/prisma -v $(prismaenv):/home/node/samurais/.env -v $(env):/home/node/samurais/env $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion)";
+        docker run -d -p 4001:4001 -p 4004:4004 --name $(containerName)_$(Build.SourceBranchName) -v $(prisma):/home/node/samurais/prisma -v $(prismaenv):/home/node/samurais/.env -v $(env):/home/node/samurais/env $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion) >> /dev/null 2>&1
+        rc=$?
+        if [[ $rc != 0 ]];
+        then
+          echo '##[error] 启动容器$(containerName)_$(Build.SourceBranchName)失败'
+          exit $rc;
+        fi
+        echo '##[success] 容器启动成功'
+        echo "##[endgroup]"

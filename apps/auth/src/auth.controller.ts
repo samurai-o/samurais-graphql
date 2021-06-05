@@ -1,13 +1,4 @@
-import { ApiException } from '@app/exceptions';
-import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  Post,
-  Req,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { AccountDto } from './dto';
@@ -41,19 +32,20 @@ export class AuthController {
   }
 
   @Get('/checkLogin')
-  async checkLogin() {
-    // throw new ApiException('错误', 99, HttpStatus.OK);
-    // const { accountID } = req.session as any;
-    // // if (!accountID) return res.redirect('/user/login');
-    // const account = await this.authService.findIdToAccount(accountID);
-    // const token = await this.authService.token(account);
-    return { token: '' };
+  async checkLogin(@Req() req: Request, @Res() res: Response) {
+    const { accountID } = req.session as any;
+    const url = await this.authService.queryLoginAuth();
+    if (!accountID) return res.redirect(`${req.headers.origin}${url}`);
+    const account = await this.authService.findIdToAccount(accountID);
+    const token = await this.authService.token(account);
+    return { token };
   }
 
   @Get('/token')
   async token(@Req() req: Request, @Res() res: Response) {
     const { accountID } = req.session as any;
-    if (!accountID) return res.redirect('/user/login');
+    const url = await this.authService.queryLoginAuth();
+    if (!accountID) return res.redirect(`${req.headers.origin}${url}`);
     const account = await this.authService.findIdToAccount(accountID);
     const token = await this.authService.token(account);
     return { token };
@@ -61,8 +53,9 @@ export class AuthController {
 
   @Post('/outlogin')
   async outlogin(@Req() req: Request, @Res() res: Response) {
+    const url = await this.authService.queryLoginAuth();
     (req.session as any).accountID = null;
     req.session.save();
-    res.redirect('/');
+    res.redirect(`${req.headers.origin}${url}`);
   }
 }
