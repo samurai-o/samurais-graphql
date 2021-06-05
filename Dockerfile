@@ -19,6 +19,7 @@ RUN pm2 link $PM2_KEY $PM2_ID
 RUN npm install
 RUN mkdir -p /home/node/samurais/env
 RUN mkdir -p /home/node/samurais/prisma
+RUN npm run prisma:generate
 RUN npm run build
 VOLUME [ "/home/node/samurais/env",  "/home/node/samurais/prisma"]
 EXPOSE 4001
