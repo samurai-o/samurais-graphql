@@ -87,7 +87,7 @@ steps:
         echo '##[info] '
 
         echo "##[info] docker run -d -p 3000:3000 -p 3001:3001 --name $(containerName)_$(Build.SourceBranchName) -v $(prisma):/home/node/samurais/prisma -v $(prismaenv):/home/node/samurais/.env -v $(env):/home/node/samurais/env $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion)";
-        docker run -d -p 4001:4001 -p 4004:4004 --name $(containerName)_$(Build.SourceBranchName) -v $(prisma):/home/node/samurais/prisma -v $(prismaenv):/home/node/samurais/.env -v $(env):/home/node/samurais/env $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion) >> /dev/null 2>&1
+        docker run -d -p 4001:4001 -p 4005:4005 --name $(containerName)_$(Build.SourceBranchName) -v $(prisma):/home/node/samurais/prisma -v $(prismaenv):/home/node/samurais/.env -v $(env):/home/node/samurais/env $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion) >> /dev/null 2>&1
         rc=$?
         if [[ $rc != 0 ]];
         then

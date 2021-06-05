@@ -22,7 +22,7 @@ RUN mkdir -p /home/node/samurais/prisma
 RUN npm run build
 VOLUME [ "/home/node/samurais/env",  "/home/node/samurais/prisma"]
 EXPOSE 4001
-EXPOSE 4004
+EXPOSE 4005
 
 CMD [ "pm2-runtime", "ecosystem.config.js" ];
 
