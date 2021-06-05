@@ -35,7 +35,7 @@ export class AuthController {
   async checkLogin(@Req() req: Request, @Res() res: Response) {
     const { accountID } = req.session as any;
     const url = await this.authService.queryLoginAuth();
-    if (!accountID) return res.redirect(`${req.headers.origin}${url}`);
+    if (!accountID) return res.redirect(url);
     const account = await this.authService.findIdToAccount(accountID);
     const token = await this.authService.token(account);
     return { token };

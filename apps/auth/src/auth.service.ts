@@ -47,6 +47,6 @@ export class AuthService {
    * @returns
    */
   async queryLoginAuth() {
-    return '';
+    return '/user/login';
   }
 }
