@@ -28,6 +28,7 @@ async function bootstrap() {
     if (!list.length) {
       await client.mkdir('/home/graphql/prisma');
       await client.mkdir('/home/graphql/env');
+      await client.mkdir('/home/graphql/logs');
     }
     await client.uploadDir(
       join(process.cwd(), 'prisma'),

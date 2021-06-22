@@ -11,6 +11,7 @@ variables:
   prisma: '/home/graphql/prisma'
   prismaenv: '/home/graphql/.env'
   env: '/home/graphql/env'
+  logs: '/home/graphql/logs'
 steps:
   - task: Docker@2
     displayName: docker登录
@@ -88,7 +89,7 @@ steps:
         echo '##[info] '
 
         echo "##[info] docker run -d -p 3000:3000 -p 3001:3001 --name $(containerName)_$(Build.SourceBranchName) -v $(prisma):/home/node/samurais/prisma -v $(prismaenv):/home/node/samurais/.env -v $(env):/home/node/samurais/env $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion)";
-        docker run -d -p 4001:4001 -p 4005:4005 --name $(containerName)_$(Build.SourceBranchName) -v $(prisma):/home/node/samurais/prisma -v $(prismaenv):/home/node/samurais/.env -v $(env):/home/node/samurais/env $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion) >> /dev/null 2>&1
+        docker run -d -p 4001:4001 -p 4005:4005 --name $(containerName)_$(Build.SourceBranchName) -v $(prisma):/home/node/samurais/prisma -v $(prismaenv):/home/node/samurais/.env -v $(env):/home/node/samurais/env -v $(logs):/home/node/samurais/logs $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion) >> /dev/null 2>&1
         rc=$?
         if [[ $rc != 0 ]];
         then
