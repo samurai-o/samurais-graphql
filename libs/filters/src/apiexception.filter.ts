@@ -19,16 +19,16 @@ export class ApiExceptionFilter<HttpException> implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse() as Response;
     response.status(exception.getStatus()).json({
-      errorCode: exception.getErrorCode(),
-      errorMessage: exception.getErrorMessage(),
+      code: exception.getErrorCode(),
+      message: exception.getErrorMessage(),
     });
   }
   httpexception(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse() as Response;
     response.status(exception.getStatus()).json({
-      errorCode: exception.getStatus(),
-      errorMessage: '服务异常',
+      code: exception.getStatus(),
+      message: '服务异常',
     });
   }
 }
