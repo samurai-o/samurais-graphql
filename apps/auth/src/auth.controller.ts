@@ -1,69 +1,61 @@
-import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { AccountDto } from './dto';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('/login')
-  async login(
-    @Body() data: AccountDto,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async login(@Body() data: AccountDto, @Req() req: Request) {
     const account = await this.authService.login(data);
     (req.session as any).accountID = account.id;
     req.session.save();
     const token = await this.authService.token(account);
-    res.setHeader('Authorization', token);
-    res.json({ status: true });
+    req.res.setHeader('Authorization', token);
+    return true;
   }
 
   @Post('/register')
-  async register(
-    @Body() data: AccountDto,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async register(@Body() data: AccountDto, @Req() req: Request) {
     const account = await this.authService.register(data);
     (req.session as any).accountID = account.id;
     req.session.save();
     const token = await this.authService.token(account);
-    res.setHeader('Authorization', token);
-    res.json({ status: true });
+    req.res.setHeader('Authorization', token);
+    return true;
   }
 
   @Get('/checkLogin')
-  async checkLogin(@Req() req: Request, @Res() res: Response) {
+  async checkLogin(@Req() req: Request) {
     const { accountID } = req.session as any;
-    const url = await this.authService.queryLoginAuth();
     if (!accountID) {
-      res.setHeader('Authorization', '');
-      return res.json({ status: false, url });
+      req.res.setHeader('Authorization', '');
+      return false;
     }
     const account = await this.authService.findIdToAccount(accountID);
     const token = await this.authService.token(account);
-    res.setHeader('Authorization', token);
-    res.json({ status: true });
+    req.res.setHeader('Authorization', token);
+    return true;
   }
 
   @Get('/token')
-  async token(@Req() req: Request, @Res() res: Response) {
+  async token(@Req() req: Request) {
     const { accountID } = req.session as any;
     const account = await this.authService.findIdToAccount(accountID);
     const token = await this.authService.token(account);
-    res.setHeader('Authorization', token);
-    return res.json({ status: true });
+    req.res.setHeader('Authorization', token);
+    return true;
   }
 
   @Post('/outlogin')
-  async outlogin(@Req() req: Request, @Res() res: Response) {
+  async outlogin(@Req() req: Request) {
     const url = await this.authService.queryLoginAuth();
     (req.session as any).accountID = null;
     req.session.save();
-    res.redirect(`${req.headers.origin}${url}`);
+    req.res.setHeader('Authorization', '');
+    return `${req.headers.origin}${url}`;
   }
 
   @Get('/weixin')

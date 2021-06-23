@@ -1,5 +1,6 @@
 import { ConfigurationService } from '@app/configuration';
 import { ApiExceptionFilter } from '@app/filters';
+import { ResponseInterceptor } from '@app/interceptors';
 import { ValidationPipe } from '@app/pipes';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -11,6 +12,7 @@ async function bootstrap() {
   const port = config.getEnvironment('AUTH_PORT') as string;
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new ApiExceptionFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
   Logger.log('auth', '应用');
   Logger.log(port, '端口');
   await app.listen(port);

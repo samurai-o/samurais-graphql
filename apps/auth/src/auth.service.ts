@@ -10,7 +10,7 @@ export class AuthService {
   constructor(
     private readonly prisma: PrismastoreService,
     private readonly jwt: JwtService,
-  ) { }
+  ) {}
 
   async login(data: AccountDto) {
     const { email, password } = data;

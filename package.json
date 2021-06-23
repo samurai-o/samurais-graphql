@@ -139,7 +139,9 @@
       "@app/filters/(.*)": "<rootDir>/libs/filters/src/$1",
       "@app/filters": "<rootDir>/libs/filters/src",
       "@app/exceptions/(.*)": "<rootDir>/libs/exceptions/src/$1",
-      "@app/exceptions": "<rootDir>/libs/exceptions/src"
+      "@app/exceptions": "<rootDir>/libs/exceptions/src",
+      "@app/interceptors/(.*)": "<rootDir>/libs/interceptors/src/$1",
+      "@app/interceptors": "<rootDir>/libs/interceptors/src"
     }
   }
 }
