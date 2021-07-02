@@ -35,7 +35,7 @@ async function bootstrap() {
       '/home/graphql/prisma',
     );
     await client.uploadDir(join(process.cwd(), 'env'), '/home/graphql/env');
-    await client.put(join(process.cwd(), '.env'), '/home/graphql/.env');
+    // await client.put(join(process.cwd(), '.env'), '/home/graphql/.env');
     process.exit(0);
   } catch (error) {
     console.log(error);
