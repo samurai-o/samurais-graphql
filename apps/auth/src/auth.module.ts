@@ -1,7 +1,8 @@
-import { ConfigurationModule } from '@app/configuration';
-import { JWT_SECRETORKEY, SessionMiddleware } from '@app/middlewares';
+import { ConfigurationModule, JWT_SECRETORKEY } from '@app/configuration';
+import { SessionMiddleware } from '@app/middlewares';
 import { LoggerMiddleware } from '@app/middlewares/logger.middleware';
 import { PrismastoreModule } from '@app/prismastore';
+import { TaskModule } from '@app/task';
 import {
   MiddlewareConsumer,
   Module,
@@ -18,6 +19,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     ConfigurationModule,
     PrismastoreModule,
     JwtModule.register({ secret: JWT_SECRETORKEY }),
+    TaskModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

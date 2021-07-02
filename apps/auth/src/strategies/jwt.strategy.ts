@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismastoreService } from '@app/prismastore';
-import { JWT_SECRETORKEY } from '@app/middlewares';
+import { JWT_SECRETORKEY } from '@app/configuration';
 import { IAccount } from '../interfaces';
 
 @Injectable()

@@ -1,11 +1,15 @@
-import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
+import { NoticeService } from '@app/task';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { AccountDto } from './dto';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly notice: NoticeService,
+  ) {}
 
   @Post('/login')
   async login(@Body() data: AccountDto, @Req() req: Request) {
@@ -61,5 +65,15 @@ export class AuthController {
   @Get('/weixin')
   async weixinLogin(@Query() query: any) {
     console.log(query);
+  }
+
+  @Get('/jobs')
+  async jobs() {
+    this.notice.createScanCode();
+  }
+
+  @Post('/success/:id')
+  async successJob(@Param('id') id: any) {
+    this.notice.scanCode(id);
   }
 }

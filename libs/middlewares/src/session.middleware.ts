@@ -2,11 +2,11 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import * as session from 'express-session';
 import * as redis from 'redis';
 import * as connectRedis from 'connect-redis';
-import { environment } from '@app/configuration';
-
-export const DEFAULT_SECRET = 'samurai-session-94-?';
-export const DEFAULT_SESSION_NAME = 'SAMURAI-SESSION';
-export const JWT_SECRETORKEY = 'SAMURAI-SECRET-94-?';
+import {
+  DEFAULT_SECRET,
+  DEFAULT_SESSION_NAME,
+  environment,
+} from '@app/configuration';
 
 const { cacheURL, cachePass } = environment();
 const Session = connectRedis(session);
@@ -25,7 +25,7 @@ export const useSession = session({
       host: cacheURL,
       port: 6379,
       password: cachePass,
-      db: 1,
+      db: 0,
       no_ready_check: true,
     }),
     ttl: 1800,

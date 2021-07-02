@@ -83,6 +83,12 @@
       ],
       "@app/interceptors/*": [
         "libs/interceptors/src/*"
+      ],
+      "@app/task": [
+        "libs/task/src"
+      ],
+      "@app/task/*": [
+        "libs/task/src/*"
       ]
     }
   }

@@ -142,6 +142,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/interceptors/tsconfig.lib.json"
       }
+    },
+    "socket": {
+      "type": "application",
+      "root": "apps/socket",
+      "entryFile": "main",
+      "sourceRoot": "apps/socket/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/socket/tsconfig.app.json"
+      }
+    },
+    "task": {
+      "type": "library",
+      "root": "libs/task",
+      "entryFile": "index",
+      "sourceRoot": "libs/task/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/task/tsconfig.lib.json"
+      }
     }
   }
 }

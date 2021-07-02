@@ -2,12 +2,12 @@ import { Global, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { isString } from '@frade-sam/samtools';
 import { environment } from './utils';
-import { envc, Environment } from './utils/const';
+import { IEnv, Environment } from './interface';
 
 @Global()
 @Injectable()
 export class ConfigurationService extends ConfigService {
-  getEnvironment(key?: keyof Environment): envc | string {
+  getEnvironment(key?: keyof Environment): IEnv | string {
     if (!isString(key)) return environment();
     return this.get(key);
   }

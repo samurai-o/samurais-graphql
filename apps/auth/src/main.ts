@@ -13,8 +13,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new ApiExceptionFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
-  Logger.log('auth', '应用');
-  Logger.log(port, '端口');
-  await app.listen(port);
+  await app.listen(port, () => {
+    Logger.log('auth', '应用');
+    Logger.log(port, '端口');
+  });
 }
 bootstrap();
