@@ -30,4 +30,4 @@ import { NoticeProcessor, NoticeService } from './notice';
   providers: [NoticeService, NoticeProcessor],
   exports: [NoticeService],
 })
-export class TaskModule { }
+export class TaskModule {}

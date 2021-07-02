@@ -1,10 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { NoticeService } from '@app/task';
+import {
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+} from '@nestjs/websockets';
 
-@WebSocketGateway({ namespace: '/chat' })
+@WebSocketGateway()
 export class SocketGateway {
+  constructor(private readonly notice: NoticeService) {}
+
   @SubscribeMessage('message')
-  handleMessage(_client: any, _payload: any): string {
+  handleMessage(@MessageBody() data: string): string {
+    console.log(data);
     return 'Hello world!';
   }
 }

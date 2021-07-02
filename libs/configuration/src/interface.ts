@@ -5,6 +5,7 @@ export type Environment = {
   AUTH_PORT?: string;
   GATEWAY_PORT?: string;
   UPLOAD_PORT?: string;
+  SOCKET_PORT?: string;
   SECRETID?: string;
   SECRETKEY?: string;
   BUCKET?: string;
@@ -36,4 +37,5 @@ export interface IEnv {
   cacheURL: string;
   cacheProt: string;
   cachePass: string;
+  socket: string;
 }

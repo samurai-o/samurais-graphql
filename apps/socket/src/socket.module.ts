@@ -1,11 +1,10 @@
+import { ConfigurationModule } from '@app/configuration';
+import { TaskModule } from '@app/task';
 import { Module } from '@nestjs/common';
-import { SocketController } from './socket.controller';
-import { SocketService } from './socket.service';
 import { SocketGateway } from './socket.gateway';
 
 @Module({
-  imports: [],
-  controllers: [SocketController],
-  providers: [SocketService, SocketGateway],
+  imports: [ConfigurationModule, TaskModule],
+  providers: [SocketGateway],
 })
 export class SocketModule {}

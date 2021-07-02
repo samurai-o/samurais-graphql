@@ -160,6 +160,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/task/tsconfig.lib.json"
       }
+    },
+    "tools": {
+      "type": "library",
+      "root": "libs/tools",
+      "entryFile": "index",
+      "sourceRoot": "libs/tools/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/tools/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -6,6 +6,7 @@ export const validationSchema = Joi.object({
   PKG_PORT: Joi.string().default('3003'),
   GATEWAY_PORT: Joi.string().default('3001'),
   UPLOAD_PORT: Joi.string().default('3004'),
+  SOCKET_PORT: Joi.string().default('3006'),
   SECRETID: Joi.string().default(''),
   SECRETKEY: Joi.string().default(''),
   BUCKET: Joi.string().default(''),

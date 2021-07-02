@@ -39,6 +39,8 @@
     "@nestjs/jwt": "^7.2.0",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.5.1",
+    "@nestjs/platform-socket.io": "^7.6.18",
+    "@nestjs/platform-ws": "^7.6.18",
     "@nestjs/websockets": "^7.6.18",
     "@prisma/client": "^2.23.0",
     "@types/chalk": "^2.2.0",
@@ -59,10 +61,13 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "prisma": "^2.23.0",
+    "qrcode": "^1.4.4",
     "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
+    "sharp": "^0.28.3",
+    "socket.io-redis": "^6.1.1",
     "stacktrace-js": "^2.0.2"
   },
   "devDependencies": {
@@ -80,7 +85,10 @@
     "@types/node": "^14.14.6",
     "@types/passport": "^1.0.6",
     "@types/passport-jwt": "^3.0.5",
+    "@types/qrcode": "^1.4.0",
     "@types/redis": "^2.8.29",
+    "@types/sharp": "^0.28.3",
+    "@types/socket.io-redis": "^3.0.0",
     "@types/stacktrace-js": "^2.0.3",
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
@@ -147,7 +155,9 @@
       "@app/interceptors/(.*)": "<rootDir>/libs/interceptors/src/$1",
       "@app/interceptors": "<rootDir>/libs/interceptors/src",
       "@app/task/(.*)": "<rootDir>/libs/task/src/$1",
-      "@app/task": "<rootDir>/libs/task/src"
+      "@app/task": "<rootDir>/libs/task/src",
+      "@app/tools/(.*)": "<rootDir>/libs/tools/src/$1",
+      "@app/tools": "<rootDir>/libs/tools/src"
     }
   }
 }

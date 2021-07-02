@@ -15,6 +15,7 @@ export function environment(): IEnv {
     upload: process.env.UPLOAD_PORT,
     auth: process.env.AUTH_PORT,
     gateway: process.env.GATEWAY_PORT,
+    socket: process.env.SOCKET_PORT,
     SecretId: process.env.SECRETID,
     SecretKey: process.env.SECRETKEY,
     Bucket: process.env.BUCKET,

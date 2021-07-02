@@ -89,6 +89,12 @@
       ],
       "@app/task/*": [
         "libs/task/src/*"
+      ],
+      "@app/tools": [
+        "libs/tools/src"
+      ],
+      "@app/tools/*": [
+        "libs/tools/src/*"
       ]
     }
   }

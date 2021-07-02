@@ -4,21 +4,23 @@ import { Queue } from 'bull';
 
 @Injectable()
 export class NoticeService {
-  constructor(@InjectQueue('notice') private readonly noticeQueue: Queue) { }
+  constructor(@InjectQueue('notice') private readonly noticeQueue: Queue) {}
 
   async createScanCode() {
-    await this.noticeQueue.add('scanCode', {
-      id: 1,
-    });
+    await this.noticeQueue.add(
+      'scanCode',
+      {
+        id: 1,
+      },
+      { removeOnComplete: true, removeOnFail: true },
+    );
     this.noticeQueue.on('completed', (job) => {
-      console.log(job);
+      console.log('job', job);
     });
   }
 
   async scanCode(id: any) {
-    console.log(id);
     const job = await this.noticeQueue.getJob(id);
-    console.log(job);
-    job.moveToCompleted();
+    job.moveToCompleted(null, true, true);
   }
 }
