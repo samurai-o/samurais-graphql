@@ -2,7 +2,6 @@ import { ConfigurationService } from '@app/configuration';
 import { Logger } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
 import { NestFactory } from '@nestjs/core';
-// import { RedisIoAdapter } from './socket.adapter';
 import { SocketModule } from './socket.module';
 
 async function bootstrap() {
