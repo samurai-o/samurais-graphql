@@ -75,6 +75,15 @@ steps:
           echo "##[success] 容器$(containerName)_$(Build.SourceBranchName)删除"
         fi
 
+        docker rmi -f $(docker images "$(imageName)" -q) >> /dev/null 2>&1
+        rc=$?
+        if [[ $rc != 0 ]];
+        then
+          echo "##[error] 清除所有镜像失败"
+          exit $rc;
+        fi
+        echo "##[error] 清除所有镜像成功"
+
         echo "##[info] 拉取镜像$(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion)"
         docker pull $(imageName):$(Build.SourceBranchName)_$(Build.SourceVersion) >> /dev/null 2>&1
         rc=$?
