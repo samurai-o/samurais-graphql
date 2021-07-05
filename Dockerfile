@@ -4,7 +4,7 @@ LABEL author lemonpaimc
 RUN mkdir -p /home/node/samurais
 WORKDIR /home/node/samurais
 COPY package.json package-lock.json ./
-RUN npm install --production
+RUN npm install
 
 # RUN pm2 install pm2-webshell
 # RUN pm2 conf pm2-webshell:username lemonpaimc@163.com
