@@ -3,7 +3,7 @@ FROM node:latest as builder
 LABEL author lemonpaimc
 RUN mkdir -p /home/node/samurais
 WORKDIR /home/node/samurais
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN npm install
 
 # RUN pm2 install pm2-webshell
@@ -22,6 +22,7 @@ RUN mkdir -p /home/node/samurais/env
 RUN mkdir -p /home/node/samurais/prisma
 
 RUN npm install -g pm2@latest
+COPY package.json ./
 COPY --from=builder /home/node/samurais/node_modules ./node_modules
 COPY . /home/node/samurais
 RUN pm2 link $PM2_KEY $PM2_ID
@@ -30,6 +31,7 @@ RUN npm run build
 VOLUME [ "/home/node/samurais/env",  "/home/node/samurais/prisma"]
 EXPOSE 4001
 EXPOSE 4005
+EXPOSE 4006
 
 CMD [ "pm2-runtime", "ecosystem.config.js" ];
 
