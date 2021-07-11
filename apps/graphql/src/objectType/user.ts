@@ -6,8 +6,8 @@ export class User implements user {
   @Field({ nullable: true, description: '用户id' })
   id: string;
 
-  @Field({ nullable: true, description: '账号id' })
-  accountID: string;
+  @Field({ nullable: true, description: '账号id', defaultValue: [] })
+  account: string;
 
   @Field({ nullable: true, description: '描述' })
   info: string;

@@ -8,7 +8,7 @@ type User {
   id: String
 
   """账号id"""
-  accountID: String
+  account: String
 
   """描述"""
   info: String

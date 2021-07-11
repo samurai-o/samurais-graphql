@@ -1,5 +1,5 @@
 import { IAccount } from '@app/authorization/interfaces';
-import { GqlContext, Gqlresponse, Gqltoken } from '@app/decorators';
+import { GqlContext, Gqltoken } from '@app/decorators';
 import { PrismastoreService } from '@app/prismastore';
 import { UseGuards } from '@nestjs/common';
 import {
@@ -67,22 +67,22 @@ export class OrganizationResolver {
     @GqlContext('prisma') prisma: PrismastoreService,
   ) {
     if (!organization || !organization.id) return [];
-    const data = await prisma.personnel.findMany({
-      where: { organazitionId: organization.id },
-      select: {
-        account: {
-          select: {
-            user: {
-              select: {
-                id: true,
-                info: true,
+    return await prisma.personnel
+      .findMany({
+        where: { organazitionId: organization.id },
+        select: {
+          account: {
+            select: {
+              user: {
+                select: {
+                  id: true,
+                  info: true,
+                },
               },
             },
           },
         },
-      },
-    });
-    console.log(data);
-    return [];
+      })
+      .then((res) => res.map((r) => r.account.user));
   }
 }

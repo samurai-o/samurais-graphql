@@ -24,17 +24,17 @@ async function bootstrap() {
       username,
       password,
     });
-    const list = await client.list('/home/graphql').catch(() => []);
+    const list = await client.list('/home/node/source').catch(() => []);
     if (!list.length) {
-      await client.mkdir('/home/graphql/prisma');
-      await client.mkdir('/home/graphql/env');
-      await client.mkdir('/home/graphql/logs');
+      await client.mkdir('/home/node/source/prisma');
+      await client.mkdir('/home/node/source/env');
+      await client.mkdir('/home/node/source/logs');
     }
     await client.uploadDir(
       join(process.cwd(), 'prisma'),
-      '/home/graphql/prisma',
+      '/home/node/source/prisma',
     );
-    await client.uploadDir(join(process.cwd(), 'env'), '/home/graphql/env');
+    await client.uploadDir(join(process.cwd(), 'env'), '/home/node/source/env');
     // await client.put(join(process.cwd(), '.env'), '/home/graphql/.env');
     process.exit(0);
   } catch (error) {
