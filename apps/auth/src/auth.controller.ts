@@ -55,11 +55,10 @@ export class AuthController {
 
   @Post('/outlogin')
   async outlogin(@Req() req: Request) {
-    const url = await this.authService.queryLoginAuth();
     (req.session as any).accountID = null;
     req.session.save();
     req.res.setHeader('Authorization', '');
-    return `${req.headers.origin}${url}`;
+    return true;
   }
 
   @Post('/scancode/:id')

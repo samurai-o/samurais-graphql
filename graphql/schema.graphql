@@ -1,0 +1,49 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""用户基础信息"""
+type User {
+  """用户id"""
+  id: String
+
+  """账号id"""
+  accountID: String
+
+  """描述"""
+  info: String
+}
+
+"""组织信息"""
+type Organization {
+  """组织id"""
+  id: String
+
+  """组织名"""
+  name: String
+
+  """组织描述"""
+  describe: String
+
+  """成员列表"""
+  personnels: [User!]
+}
+
+type Query {
+  organization: Organization!
+}
+
+type Mutation {
+  create(input: OrganizationCreate!): Organization!
+}
+
+input OrganizationCreate {
+  """组织id"""
+  id: String
+
+  """组织名称"""
+  name: String!
+
+  """组织描述"""
+  describe: String
+}

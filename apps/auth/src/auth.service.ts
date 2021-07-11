@@ -26,7 +26,13 @@ export class AuthService {
     let account = await this.prisma.account.findFirst({ where: { email } });
     if (account) throw new ApiException('账号重名', 999, 200);
     account = await this.prisma.account.create({
-      data: { email, password },
+      data: {
+        email,
+        password,
+        user: {
+          create: { info: '' },
+        },
+      },
     });
     if (!account) throw new Error('创建失败');
     return account;

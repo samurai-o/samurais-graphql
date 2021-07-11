@@ -50,6 +50,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "connect-redis": "^5.2.0",
+    "dataloader": "^2.0.0",
     "express-session": "^1.17.2",
     "graphql": "^15.5.0",
     "graphql-tools": "^7.0.5",
@@ -137,10 +138,6 @@
       "@app/logger": "<rootDir>/libs/logger/src",
       "@app/email/(.*)": "<rootDir>/libs/email/src/$1",
       "@app/email": "<rootDir>/libs/email/src",
-      "@app/datasource/(.*)": "<rootDir>/libs/datasource/src/$1",
-      "@app/datasource": "<rootDir>/libs/datasource/src",
-      "@app/models/(.*)": "<rootDir>/libs/models/src/$1",
-      "@app/models": "<rootDir>/libs/models/src",
       "@app/prismastore/(.*)": "<rootDir>/libs/prismastore/src/$1",
       "@app/prismastore": "<rootDir>/libs/prismastore/src",
       "@app/decorators/(.*)": "<rootDir>/libs/decorators/src/$1",
@@ -158,7 +155,9 @@
       "@app/task/(.*)": "<rootDir>/libs/task/src/$1",
       "@app/task": "<rootDir>/libs/task/src",
       "@app/tools/(.*)": "<rootDir>/libs/tools/src/$1",
-      "@app/tools": "<rootDir>/libs/tools/src"
+      "@app/tools": "<rootDir>/libs/tools/src",
+      "@app/authorization/(.*)": "<rootDir>/libs/authorization/src/$1",
+      "@app/authorization": "<rootDir>/libs/authorization/src"
     }
   },
   "config": {

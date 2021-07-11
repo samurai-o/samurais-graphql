@@ -4,7 +4,7 @@ export const validationSchema = Joi.object({
   USER_PORT: Joi.string().default('3002'),
   AUTH_PORT: Joi.string().default('3005'),
   PKG_PORT: Joi.string().default('3003'),
-  GATEWAY_PORT: Joi.string().default('3001'),
+  GRPHQL_PORT: Joi.string().default('3001'),
   UPLOAD_PORT: Joi.string().default('3004'),
   SOCKET_PORT: Joi.string().default('3006'),
   SECRETID: Joi.string().default(''),

@@ -1,31 +1,13 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/gateway/src",
+  "sourceRoot": "apps/graphql/src",
   "monorepo": true,
-  "root": "apps/gateway",
+  "root": "apps/graphql",
   "compilerOptions": {
     "webpack": true,
     "tsConfigPath": "apps/gateway/tsconfig.app.json"
   },
   "projects": {
-    "user": {
-      "type": "application",
-      "root": "apps/user",
-      "entryFile": "main",
-      "sourceRoot": "apps/user/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/user/tsconfig.app.json"
-      }
-    },
-    "gateway": {
-      "type": "application",
-      "root": "apps/gateway",
-      "entryFile": "main",
-      "sourceRoot": "apps/gateway/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/gateway/tsconfig.app.json"
-      }
-    },
     "configuration": {
       "type": "library",
       "root": "libs/configuration",
@@ -51,24 +33,6 @@
       "sourceRoot": "libs/email/src",
       "compilerOptions": {
         "tsConfigPath": "libs/email/tsconfig.lib.json"
-      }
-    },
-    "datasource": {
-      "type": "library",
-      "root": "libs/datasource",
-      "entryFile": "index",
-      "sourceRoot": "libs/datasource/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/datasource/tsconfig.lib.json"
-      }
-    },
-    "models": {
-      "type": "library",
-      "root": "libs/models",
-      "entryFile": "index",
-      "sourceRoot": "libs/models/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/models/tsconfig.lib.json"
       }
     },
     "prismastore": {
@@ -168,6 +132,24 @@
       "sourceRoot": "libs/tools/src",
       "compilerOptions": {
         "tsConfigPath": "libs/tools/tsconfig.lib.json"
+      }
+    },
+    "graphql": {
+      "type": "application",
+      "root": "apps/graphql",
+      "entryFile": "main",
+      "sourceRoot": "apps/graphql/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/graphql/tsconfig.app.json"
+      }
+    },
+    "authorization": {
+      "type": "library",
+      "root": "libs/authorization",
+      "entryFile": "index",
+      "sourceRoot": "libs/authorization/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/authorization/tsconfig.lib.json"
       }
     }
   }

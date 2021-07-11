@@ -3,7 +3,7 @@ export type Environment = {
   USER_PORT?: string;
   PKG_PORT?: string;
   AUTH_PORT?: string;
-  GATEWAY_PORT?: string;
+  GRPHQL_PORT?: string;
   UPLOAD_PORT?: string;
   SOCKET_PORT?: string;
   SECRETID?: string;
@@ -23,8 +23,7 @@ export interface IEnv {
   user: string;
   pkg: string;
   auth: string;
-  upload: string;
-  gateway: string;
+  grphql: string;
   SecretId: string;
   SecretKey: string;
   Bucket: string;

@@ -95,6 +95,12 @@
       ],
       "@app/tools/*": [
         "libs/tools/src/*"
+      ],
+      "@app/authorization": [
+        "libs/authorization/src"
+      ],
+      "@app/authorization/*": [
+        "libs/authorization/src/*"
       ]
     }
   }
