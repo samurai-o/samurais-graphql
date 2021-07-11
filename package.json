@@ -27,7 +27,7 @@
     "test:e2e": "jest --config ./apps/samurais/test/jest-e2e.json",
     "prisma:migrate": "npx prisma migrate dev --preview-feature",
     "prisma:generate": "npx prisma generate",
-    "prisma:apply": "npm run prisma:migrate && npm run prisma:generate",
+    "prisma:apply": "cross-env PRISMA_BINARIES_MIRROR=http://s3.amazonaws.com/doc/2006-03-01 && npm run prisma:migrate && npm run prisma:generate",
     "pm2:setup": "pm2 deploy ecosystem.config.js production setup",
     "pm2:deploy": "pm2 deploy ecosystem.config.js production"
   },
