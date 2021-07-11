@@ -19,4 +19,16 @@ module.exports = {
       },
     },
   ],
+  deploy: {
+    production: {
+      user: 'root',
+      host: ['118.195.142.167'],
+      ref: 'origin/release',
+      repo: 'https://github.com/samurai-o/samurais-node.git',
+      path: '/home/node',
+      ssh_options: 'StrictHostKeyChecking=no',
+      'post-deploy':
+        'npm install && pm2 startOrRestart ecosystem.config.js --env production',
+    },
+  },
 };
