@@ -31,7 +31,7 @@ module.exports = {
         NODE_ENV: 'production',
       },
       'post-deploy':
-        'npm install --production=false --unsafe-perm && npm run prisma:generate && npm run build && pm2 startOrRestart ecosystem.config.js --env production',
+        'npm install --production=false --unsafe-perm --no-fund && npm run prisma:generate && npm run build && pm2 startOrRestart ecosystem.config.js --env production',
     },
   },
 };
