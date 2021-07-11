@@ -32,7 +32,7 @@ module.exports = {
       },
       'pre-setup': 'rm -rf /home/node/source',
       'post-deploy':
-        'npm install && pm2 startOrRestart ecosystem.config.js --env production',
+        'npm install --production=false && pm2 startOrRestart ecosystem.config.js --env production',
     },
   },
 };
