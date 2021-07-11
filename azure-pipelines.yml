@@ -44,15 +44,7 @@ steps:
         mkdir -p $(prisma)
         mkdir -p $(env)
 
-        echo "##[info] docker login -u $(dockerus)"
-        docker login -u $(dockerus) -p $(dockerps) >> /dev/null 2>&1
-        rc=$?
-        if [[ $rc != 0 ]];
-        then
-          echo "##[error] 登录失败"
-          exit $rc;
-        fi
-        echo "##[info] 登录成功"
+
         constainer=$(docker ps -q --filter name=$(containerName)_$(Build.SourceBranchName))
         if test -n "$constainer"; then
           docker stop $constainer >> /dev/null 2>&1
