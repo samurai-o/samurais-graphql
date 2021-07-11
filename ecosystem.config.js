@@ -24,9 +24,13 @@ module.exports = {
       user: 'root',
       host: ['118.195.142.167'],
       ref: 'origin/release',
-      repo: 'https://github.com/samurai-o/samurais-node.git',
+      repo: 'git@github.com:samurai-o/samurais-node.git',
       path: '/home/node',
       ssh_options: 'StrictHostKeyChecking=no',
+      env: {
+        NODE_ENV: 'production',
+      },
+      'pre-setup': 'rm -rf /home/node/source',
       'post-deploy':
         'npm install && pm2 startOrRestart ecosystem.config.js --env production',
     },
