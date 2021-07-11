@@ -21,10 +21,6 @@ import { OrganizationResolver } from './organization/organization.resolver';
           cacheControl: true,
           debug: true,
           transformAutoSchemaFile: true,
-          cors: {
-            credentials: true,
-            origin: true,
-          },
           context: ({ req, res }) => {
             return {
               req,
@@ -42,4 +38,4 @@ import { OrganizationResolver } from './organization/organization.resolver';
   ],
   providers: [OrganizationResolver],
 })
-export class GraphqlModule {}
+export class GraphqlModule { }
