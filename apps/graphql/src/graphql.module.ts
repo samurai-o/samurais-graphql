@@ -21,7 +21,7 @@ import { OrganizationResolver } from './organization/organization.resolver';
           cacheControl: true,
           cors: {
             credentials: true,
-            origin: true,
+            origin: 'https://studio.apollographql.com',
           },
           context: ({ req, res }) => {
             return {
@@ -40,4 +40,4 @@ import { OrganizationResolver } from './organization/organization.resolver';
   ],
   providers: [OrganizationResolver],
 })
-export class GraphqlModule {}
+export class GraphqlModule { }
