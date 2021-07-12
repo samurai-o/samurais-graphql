@@ -16,20 +16,20 @@ model user {
   info    String?
   account account[]
 
+  personnel personnel[]
+  developer developer[]
   @@index([id])
 }
 
 // 账号
 model account {
-  id            String      @id @default(uuid())
-  email         String
-  password      String
-  createAt      DateTime    @default(now())
-  updateAt      DateTime    @default(now())
-  user          user        @relation(fields: [userId], references: [id])
-  userId        String
-  organazitions personnel[]
-  developers    developer[]
+  id       String   @id @default(uuid())
+  email    String
+  password String
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now())
+  user     user     @relation(fields: [userId], references: [id])
+  userId   String
 
 
   @@index([email, id])
@@ -45,30 +45,28 @@ model systemcode {
 
 // 组织xinxi
 model organazition {
-  id         String      @id @default(uuid())
+  id       String @id @default(uuid())
   // 名称
-  name       String
+  name     String
   // 描述
-  describe   String
-  // 组织成员
-  personnels personnel[]
+  describe String
 
-  packages pkg[]
-
+  personnel personnel[]
+  pkg       packages[]
   @@index([id, name])
 }
 
 // 组织人员
 model personnel {
   id             String       @id @default(uuid())
-  account        account      @relation(fields: [accountId], references: [id])
-  accountId      String
+  user           user         @relation(fields: [userId], references: [id])
+  userId         String
   organazition   organazition @relation(fields: [organazitionId], references: [id])
   organazitionId String
 }
 
 // 包基础信息
-model pkg {
+model packages {
   id             String        @id @default(uuid())
   name           String
   // 描述
@@ -77,18 +75,18 @@ model pkg {
   updateAt       DateTime      @default(now())
   organazition   organazition? @relation(fields: [organazitionId], references: [id])
   organazitionId String?
-  developers     developer[]
 
+  developer developer[]
   @@index([id, name, organazitionId])
 }
 
 model developer {
-  id        String  @id @default(uuid())
-  package   pkg     @relation(fields: [packageId], references: [id])
-  packageId String
-  user      account @relation(fields: [userId], references: [id])
-  userId    String
+  id        String   @id @default(uuid())
   type      Int // 账号类型
+  user      user     @relation(fields: [userId], references: [id])
+  userId    String
+  package   packages @relation(fields: [packageId], references: [id])
+  packageId String
 
-  @@index([id, userId])
+  @@index([id])
 }

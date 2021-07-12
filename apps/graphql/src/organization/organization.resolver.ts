@@ -1,4 +1,5 @@
-import { IAccount } from '@app/authorization/interfaces';
+import { AuthorizationService } from '@app/authorization/authorization.service';
+import { IToken } from '@app/authorization/interfaces';
 import { GqlContext, Gqltoken } from '@app/decorators';
 import { PrismastoreService } from '@app/prismastore';
 import { UseGuards } from '@nestjs/common';
@@ -17,6 +18,8 @@ import { User } from '../objectType/user';
 
 @Resolver(Organization)
 export class OrganizationResolver {
+  constructor(private readonly auth: AuthorizationService) {}
+
   @Mutation(() => Organization)
   @UseGuards(GqlAuthGuard)
   async create(
@@ -24,14 +27,14 @@ export class OrganizationResolver {
     input: OrganizationCreate,
     @GqlContext('prisma')
     prisma: PrismastoreService,
-    @Gqltoken() token: IAccount,
+    @Gqltoken() token: IToken,
   ) {
     return prisma.organazition.create({
       data: {
         name: input.name,
         describe: input.describe,
-        personnels: {
-          create: { accountId: token.id },
+        personnel: {
+          create: { userId: token.userID },
         },
       },
     });
@@ -41,13 +44,13 @@ export class OrganizationResolver {
   @UseGuards(GqlAuthGuard)
   organization(
     @Gqltoken()
-    token: IAccount,
+    token: IToken,
     @GqlContext('prisma')
     prisma: PrismastoreService,
   ) {
     return prisma.personnel
       .findFirst({
-        where: { accountId: token.id },
+        where: { userId: token.userID },
         select: {
           organazition: {
             select: {
@@ -71,18 +74,14 @@ export class OrganizationResolver {
       .findMany({
         where: { organazitionId: organization.id },
         select: {
-          account: {
+          user: {
             select: {
-              user: {
-                select: {
-                  id: true,
-                  info: true,
-                },
-              },
+              id: true,
+              info: true,
             },
           },
         },
       })
-      .then((res) => res.map((r) => r.account.user));
+      .then((res) => res.map((r) => r.user));
   }
 }

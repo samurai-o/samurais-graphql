@@ -1,10 +1,18 @@
 import { ConfigurationModule } from '@app/configuration';
 import { PrismastoreModule, PrismastoreService } from '@app/prismastore';
 import { GraphQLModule } from '@nestjs/graphql';
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AuthorizationModule } from '@app/authorization';
 import { createOrganazitionLoader } from './loaders';
 import { OrganizationResolver } from './organization/organization.resolver';
+import { SessionMiddleware } from '@app/middlewares';
+import { LoggerMiddleware } from '@app/middlewares/logger.middleware';
+import { AccountResolver } from './account/account.resolver';
 
 @Module({
   imports: [
@@ -21,7 +29,6 @@ import { OrganizationResolver } from './organization/organization.resolver';
           cacheControl: true,
           debug: true,
           transformAutoSchemaFile: true,
-          cors: false,
           context: ({ req, res }) => {
             return {
               req,
@@ -37,6 +44,14 @@ import { OrganizationResolver } from './organization/organization.resolver';
       },
     }),
   ],
-  providers: [OrganizationResolver],
+  providers: [OrganizationResolver, AccountResolver],
 })
-export class GraphqlModule { }
+export class GraphqlModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(SessionMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL })
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}

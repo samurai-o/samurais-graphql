@@ -29,12 +29,39 @@ type Organization {
   personnels: [User!]
 }
 
+"""账号信息"""
+type Account {
+  """账号id"""
+  id: String
+
+  """邮箱"""
+  email: String
+
+  """创建日期"""
+  createAt: DateTime
+
+  """更新日期"""
+  updateAt: DateTime
+
+  """用户id"""
+  userId: String
+
+  """所在组织列表"""
+  organazitions: [Organization!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
   organization: Organization!
 }
 
 type Mutation {
   create(input: OrganizationCreate!): Organization!
+  register(input: AccountCreate!): Account!
 }
 
 input OrganizationCreate {
@@ -46,4 +73,16 @@ input OrganizationCreate {
 
   """组织描述"""
   describe: String
+}
+
+"""账号创建"""
+input AccountCreate {
+  """账号id"""
+  id: String
+
+  """邮箱"""
+  email: String!
+
+  """密码"""
+  password: String!
 }

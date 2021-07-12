@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismastoreService } from '@app/prismastore';
 import { JWT_SECRETORKEY } from '@app/configuration';
-import { IAccount } from '../interfaces';
+import { IToken } from '../interfaces';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -14,10 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: IAccount) {
-    const { id } = payload;
+  async validate(payload: IToken) {
+    const { userID, accountID } = payload;
     const account = await this.service.account.findFirst({
-      where: { id },
+      where: { id: accountID, userId: userID },
       select: {
         id: true,
         createAt: true,
