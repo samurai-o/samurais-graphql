@@ -12,15 +12,16 @@ async function bootstrap() {
     'https://www.samurais.cn',
     'https://studio.apollographql.com',
   ];
-  app.enableCors((req: Request, callback) => {
-    const corsOptions = {};
-    if (allowlist.indexOf(req.header('Origin')) !== -1) {
-      corsOptions['origin'] = true;
-    } else {
-      corsOptions['origin'] = false;
-    }
-    callback(null, corsOptions);
-  });
+  // app.enableCors((req: Request, callback) => {
+  //   console.log(req.headers);
+  //   const corsOptions = {};
+  //   if (allowlist.indexOf(req.header('Origin')) === -1) {
+  //     corsOptions['origin'] = true;
+  //   } else {
+  //     corsOptions['origin'] = false;
+  //   }
+  //   callback(null, corsOptions);
+  // });
   await app.listen(port, () => {
     Logger.log('auth', '应用');
     Logger.log(port, '端口');

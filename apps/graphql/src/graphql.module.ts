@@ -21,6 +21,7 @@ import { OrganizationResolver } from './organization/organization.resolver';
           cacheControl: true,
           debug: true,
           transformAutoSchemaFile: true,
+          cors: false,
           context: ({ req, res }) => {
             return {
               req,
