@@ -1,7 +1,7 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { ArgsType, Field } from '@nestjs/graphql';
 
-@InputType({ description: '账号创建' })
-export class AccountCreate {
+@ArgsType()
+export class AccountLogin {
   @Field({ nullable: true, description: '账号id' })
   id?: string;
   @Field({ description: '邮箱' })

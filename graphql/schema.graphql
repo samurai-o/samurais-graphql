@@ -57,6 +57,21 @@ scalar DateTime
 
 type Query {
   organization: Organization!
+
+  """账号登录"""
+  login(
+    """账号id"""
+    id: String
+
+    """邮箱"""
+    email: String!
+
+    """密码"""
+    password: String!
+
+    """是否记住密码"""
+    remember: Float = 0
+  ): Account!
 }
 
 type Mutation {
@@ -85,4 +100,7 @@ input AccountCreate {
 
   """密码"""
   password: String!
+
+  """是否记住密码"""
+  remember: Float = 0
 }

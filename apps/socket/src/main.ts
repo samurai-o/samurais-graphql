@@ -1,8 +1,9 @@
 import { ConfigurationService } from '@app/configuration';
 import { Logger } from '@nestjs/common';
-import { WsAdapter } from '@nestjs/platform-ws';
 import { NestFactory } from '@nestjs/core';
+import { WsAdapter } from '@nestjs/platform-ws';
 import { SocketModule } from './socket.module';
+// import { RedisAdapter } from './redis.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(SocketModule);

@@ -36,6 +36,24 @@ module.exports = {
         NODE_ENV: 'development',
       },
     },
+    {
+      name: 'socket',
+      namespace: 'samurai',
+      script: 'dist/apps/socket/main.js',
+      mode: 'cluster',
+      instances: 2,
+      autorestart: true,
+      log_date_format: 'YYYY-MM-DD HH:mm:ss',
+      out_file: 'logs/pm2/socket.log',
+      error_file: 'logs/pm2/error_socket.log',
+      max_memory_restart: '1024M',
+      env: {
+        NODE_ENV: 'production',
+      },
+      env_dev: {
+        NODE_ENV: 'development',
+      },
+    },
   ],
   deploy: {
     production: {
