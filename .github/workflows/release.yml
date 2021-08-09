@@ -35,6 +35,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /home/samurais
+            docker stop db
+            docker rm db
+            docker stop cache
+            docker rm cache
             docker-compose up -d
 
   build:
