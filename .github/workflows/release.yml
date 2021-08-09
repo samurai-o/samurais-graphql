@@ -2,29 +2,43 @@ name: release
 on:
   push:
     tags:
-     - v*
+      - v*
   
 jobs:
   updatedb:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        ip: [118.195.142.167]
+
     steps:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: cache node_modules
-        uses: actions/cache@v1
-        id: cache
+      - name: deploy
+        uses: kostya-ten/ssh-server-deploy@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          host: ${{ matrix.ip }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          scp_source: ./docker-compose.yml
+          scp_target: /home/graphql/
 
-      - name: install packages
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install
-      
+      - name: updatedb
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ matrix.ip }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /home/graphql
+            docker-compose up -d
+
   build:
+    needs: [updatedb]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -34,24 +48,32 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: cache node_modules
-        uses: actions/cache@v1
-        id: cache
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: install packages
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install
-
-      - name: build
-        run: npm run build
-
       - name: trgz
         run: tar -zcvf release.tgz ./
+
+      - name: deploy
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ matrix.ip }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          scp_source: ./release.tgz
+          scp_target: /home/graphql/
+
+      - name: start
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ matrix.ip }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /home/graphql
+            tar zxvf release.tgz
+            npm install
+            npm run build
+            pm2 start
 
 
   
