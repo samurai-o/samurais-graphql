@@ -7,7 +7,7 @@ services:
       - 5432:5432
     environment:
       POSTGRES_USER: lemonpai
-      POSTGRES_PASSWORD: !Mcfth0519
+      POSTGRES_PASSWORD: Mcfth0519
       PDDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - /home/db:/var/lib/postgresql/data
