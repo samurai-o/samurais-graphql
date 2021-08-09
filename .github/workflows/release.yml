@@ -23,12 +23,9 @@ jobs:
       - name: install packages
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
-
-      - name: update db
-        run: npm run db
       
   build:
-    runs-on: ${{ matrix.ip }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
@@ -55,16 +52,6 @@ jobs:
 
       - name: trgz
         run: tar -zcvf release.tgz ./
-
-      - name: deploy
-        uses: kostya-ten/ssh-server-deploy@v4
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          scp_source: ./release.tgz
-          scp_target: /home/samurais/
 
 
   
