@@ -13,8 +13,11 @@ import { NoticeProcessor, NoticeService } from './notice';
       name: 'notice',
       imports: [ConfigurationModule],
       useFactory: (config: ConfigurationService) => {
-        const { cacheURL, cacheProt, cachePass } =
-          config.getEnvironment() as IEnv;
+        const {
+          cacheURL,
+          cacheProt,
+          cachePass,
+        } = config.getEnvironment() as IEnv;
         return {
           redis: {
             host: cacheURL,

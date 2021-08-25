@@ -11,7 +11,7 @@ import { map, startWith } from 'rxjs/operators';
 
 @WebSocketGateway()
 export class SocketGateway {
-  constructor(private readonly notice: NoticeService) { }
+  constructor(private readonly notice: NoticeService) {}
 
   @SubscribeMessage('qrcode')
   async handleMessage(@MessageBody() data: string) {

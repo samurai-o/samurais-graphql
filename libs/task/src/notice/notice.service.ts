@@ -2,8 +2,9 @@ import { InjectQueue } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
 import { isObject, isString } from '@frade-sam/samtools';
 import { JobOptions, Queue } from 'bull';
-import { v4 } from 'uuid';
 import { createQr } from '@app/tools';
+import { v4 } from 'uuid';
+import aes from '@app/tools/crypto';
 import { ScancodePayload } from './interfaces';
 
 export enum ScancodeAction {
@@ -23,21 +24,35 @@ export class NoticeService {
     return this.noticeQueue;
   }
 
-  async createScanCode(data: string) {
+  /**
+   * 创建job
+   * @param name
+   * @param data
+   * @returns
+   */
+  private async createJob(name: string, data: string) {
     if (!isString(data)) return null;
-    // 负载
     const payload: Partial<ScancodePayload> = {};
     payload.timestemp = new Date().getTime();
     payload.uuid = v4();
     payload.status = false;
     payload.data = data;
-    // 任务配置
     const options: JobOptions = {
       removeOnComplete: false,
       removeOnFail: true,
       delay: 60000, // 延迟60秒之后自动删除
     };
-    const job = await this.noticeQueue.add('createQrcode', payload, options);
+    return await this.noticeQueue.add(name, payload, options);
+  }
+
+  /**
+   * 创建扫码任务
+   * @param data
+   * @returns
+   */
+  async createScanCode(data: string) {
+    const job = await this.createJob('createQrcode', data);
+    if (!job) return null;
     return createQr(JSON.stringify({ id: job.id, payload: data }))
       .then((code: string) => {
         return { id: job.id, code };
@@ -56,5 +71,14 @@ export class NoticeService {
     const job = await this.noticeQueue.getJob(id);
     if (!isObject(payload)) return null;
     await job.moveToCompleted(JSON.stringify(payload), true, true);
+  }
+
+  /**
+   * 创建验证code
+   */
+  async createVerificationCode(data: string) {
+    const job = await this.createJob('createVerificationCode', data);
+    if (!job) return null;
+    return aes.encrypt(JSON.stringify({ ID: job.id }));
   }
 }

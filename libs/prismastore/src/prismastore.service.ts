@@ -10,8 +10,7 @@ import {
 @Injectable()
 export class PrismastoreService
   extends PrismaClient
-  implements OnModuleInit, OnModuleDestroy
-{
+  implements OnModuleInit, OnModuleDestroy {
   constructor() {
     super({ log: ['error', 'info', 'query', 'warn'] });
   }

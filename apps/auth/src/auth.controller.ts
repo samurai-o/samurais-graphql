@@ -1,15 +1,18 @@
+import { EmailService } from '@app/email';
 import { NoticeService } from '@app/task';
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { AccountDto } from './dto';
+import { registerToemial } from './template';
 
 @Controller()
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly task: NoticeService,
-  ) {}
+    private readonly email: EmailService,
+  ) { }
 
   @Post('/login')
   async login(@Body() data: AccountDto, @Req() req: Request) {
@@ -27,6 +30,19 @@ export class AuthController {
     (req.session as any).accountID = account.id;
     req.session.save();
     const token = await this.authService.token(account);
+    // 创建验证链接
+    const verification = await this.task.createVerificationCode(
+      JSON.stringify({ email: account.email, id: account.id }),
+    );
+    // 发送验证邮件
+    await this.email.sendMessage({
+      to: [account.email],
+      subject: '账号验证',
+      html: registerToemial({
+        name: account.email,
+        content: `${req.hostname}/email/verification/${verification}`,
+      }),
+    });
     req.res.setHeader('Authorization', token);
     return true;
   }

@@ -1,4 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { ConfigurationService, IEnv } from '@app/configuration';
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { createTransport, Transporter } from 'nodemailer';
+import smtpTransport from 'nodemailer-smtp-transport';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { EmailMessage } from './interface';
 
 @Injectable()
-export class EmailService {}
+export class EmailService implements OnModuleInit {
+  private email: Transporter<SMTPTransport.SentMessageInfo>;
+  constructor(private readonly config: ConfigurationService) {}
+  onModuleInit() {
+    const { email, password, email_url } = this.config.getEnvironment() as IEnv;
+    this.email = createTransport(
+      smtpTransport({
+        host: email_url,
+        secure: false,
+        port: 25,
+        auth: { user: email, pass: password },
+      }),
+    );
+  }
+
+  sendMessage(params: EmailMessage) {
+    const { to, ..._params } = params;
+    const from = this.config.getEnvironment('ADMIN_EMAIL');
+    return new Promise((res) => {
+      this.email.sendMail(
+        { ..._params, from, to: to.join(',') },
+        (err, info) => {
+          if (err) res(false);
+          else res(info);
+          this.email.close();
+        },
+      );
+    });
+  }
+}
