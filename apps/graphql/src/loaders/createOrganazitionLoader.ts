@@ -13,7 +13,7 @@ export function createOrganazitionLoader(prisma: PrismastoreService) {
     });
     const organazitionMap = mapFromArray(
       organazitions,
-      (organazition) => organazition.id,
+      (organazition) => (organazition as any).id,
     );
     return ids.map((id) => organazitionMap[id]);
   });
