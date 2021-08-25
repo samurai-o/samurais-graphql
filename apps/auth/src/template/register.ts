@@ -11,7 +11,8 @@ export interface IRegisterToemial {
 export function registerToemial(options: IRegisterToemial) {
   return `
         <div>
-
+          <p>${options.name}</p>
+          ${options.content}
         </div>
     `;
 }

@@ -29,6 +29,7 @@ export class AuthService {
       data: {
         email,
         password,
+        verification: false,
         user: {
           create: { info: '' },
         },

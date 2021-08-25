@@ -81,4 +81,20 @@ export class NoticeService {
     if (!job) return null;
     return aes.encrypt(JSON.stringify({ ID: job.id }));
   }
+
+  /**
+   * 验证邮箱
+   * @param code
+   * @param payload
+   */
+  async verificationCode(code: string, payload: any) {
+    const { ID } = JSON.parse(aes.decrypt(code));
+    const job = await this.noticeQueue.getJob(ID);
+    const [, id] = await job.moveToCompleted(
+      JSON.stringify(payload),
+      true,
+      true,
+    );
+    return id;
+  }
 }

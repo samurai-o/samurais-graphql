@@ -35,16 +35,28 @@ export class AuthController {
       JSON.stringify({ email: account.email, id: account.id }),
     );
     // 发送验证邮件
-    await this.email.sendMessage({
+    const status = await this.email.sendMessage({
       to: [account.email],
       subject: '账号验证',
       html: registerToemial({
         name: account.email,
-        content: `${req.hostname}/email/verification/${verification}`,
+        content: `<iframe src="https://www.samurais.cn/${verification}" />`,
       }),
     });
+    console.log(status);
     req.res.setHeader('Authorization', token);
     return true;
+  }
+
+  /**
+   *
+   * @param code
+   * @returns
+   */
+  @Post('/verification/:code')
+  async verification(@Param('code') code: string) {
+    const id = await this.task.verificationCode(code, { message: '验证成功' });
+    return !!id;
   }
 
   @Get('/checkLogin')

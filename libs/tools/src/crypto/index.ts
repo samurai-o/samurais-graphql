@@ -1,5 +1,5 @@
 import { isArray, isNum, isObject, isString } from '@frade-sam/samtools';
-import crypto from 'crypto-js';
+import * as crypto from 'crypto-js';
 import { iv, key } from './const';
 
 class AES {
